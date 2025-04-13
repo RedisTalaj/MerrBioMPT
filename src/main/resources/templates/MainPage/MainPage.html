@@ -65,13 +65,14 @@ cb=googleTranslateElementInit">
         <div class="products-scroller">
             <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
             <div class="products-grid">
-                <div class="product-card" th:each="product : ${products}" th:if="${product.authorized != 'Unauthorized'}">
+                <div class="product-card" th:each="product : ${products}">
                     <a th:href="@{/main/details/{id}(id=${product.productId})}">
                         <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
                     </a>
                     <div class="product-details">
                         <h3 class="product-name" th:text="${product.product_name}"></h3>
                         <p class="product-category" th:text="${product.category}"></p>
+                        <p class="product-category"  th:text="${product.authorized}"></p>
                         <div class="button-basket">
                             <button class="basket-btn" data-product-id="${product.productId}">
                                 <i class="fas fa-shopping-basket"></i>
@@ -93,13 +94,14 @@ cb=googleTranslateElementInit">
         <div class="products-scroller">
             <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
             <div class="products-grid">
-                <div class="product-card" th:each="product : ${frutaProducts}" th:if="${product.authorized != 'Unauthorized'}">
+                <div class="product-card" th:each="product : ${frutaProducts}">
                     <a th:href="@{/main/details/{id}(id=${product.productId})}">
                         <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
                     </a>
                     <div class="product-details">
                         <h3 class="product-name" th:text="${product.product_name}"></h3>
                         <p class="product-category" th:text="${product.category}"></p>
+                        <p class="product-category"  th:text="${product.authorized}"></p>
                         <button class="basket-btn" data-product-id="${product.productId}">
                             <i class="fas fa-shopping-basket"></i>
                         </button>
@@ -119,13 +121,16 @@ cb=googleTranslateElementInit">
         <div class="products-scroller">
             <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
             <div class="products-grid">
-                <div class="product-card" th:each="product : ${perimeProducts}" th:if="${product.authorized != 'Unauthorized'}">
+                <div class="product-card" th:each="product : ${perimeProducts}">
                     <a th:href="@{/main/details/{id}(id=${product.productId})}">
                         <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
                     </a>
                     <div class="product-details">
                         <h3 class="product-name" th:text="${product.product_name}"></h3>
                         <p class="product-category" th:text="${product.category}"></p>
+                        <p class="product-category"  th:text="${product.authorized}"
+                           th:style="${product.authorized == 'Unauthorized'} ? 'color: #ffcccc;' : ''"
+                        ></p>
                         <button class="basket-btn" data-product-id="${product.productId}">
                             <i class="fas fa-shopping-basket"></i>
                         </button>
