@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" th:href="@{/product/user_profile.css}">
+</head>
+<body>
+<div>
+  <header>
+    <nav>
+      <a th:href="@{/main/MainPage}">Home</a>
+    </nav>
+  </header>
+  <div class="user-information">
+    <h2>User Profile</h2>
+    <div class="user-information-left">
+      <h3>Personal Information</h3>
+      <p>First Name: <span th:text="${user.username}"></span></p>
+      <p>Last Name: <span th:text="${user.lastname}"></span></p>
+      <p>Email: <span th:text="${user.email}"></span></p>
+      <p>Address: <span th:text="${user.address}"></span></p>
+      <p>Password: <span th:text="${user.password}"></span></p>
+    </div>
+    <div class="actions">
+      <a href="#">
+        <button class="update">Edit Profile</button>
+      </a>
+      <a href="#">
+        <button class="delete">Delete Profile</button>
+      </a>
+    </div>
+  </div>
+  <div class="additional-links">
+    <a href="#">Basket</a>
+    <a th:href="@{/main/orders/history}">Order History</a>
+    <a th:if="${user != null && user.role == 'Admin'}" th:href="@{/users}">User Management</a>
+    <a th:if="${user != null && user.role == 'Farmer' || user.role =='Admin'}" th:href="@{/products}">Product Management</a>
+  </div>
+</div>
+</body>
+
+</html>

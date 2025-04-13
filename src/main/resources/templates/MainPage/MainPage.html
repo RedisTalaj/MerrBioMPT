@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" th:href="@{/product/mainpage.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<nav>
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+    </script>
+
+    <script type="text/javascript"
+            src="https://translate.google.com/translate_a/element.js?
+cb=googleTranslateElementInit">
+    </script>
+
+    <div class="nav-container">
+        <div class="nav-brand">
+            <img th:src="@{/images/OtherImages/bioLogo.jpg}" alt="logo" class="Logo">
+            <h2>Merr Bio</h2>
+        </div>
+
+        <div class="search-bar">
+            <form th:action="@{/main/searchMainPage}" method="get">
+                <input type="text" name="keyword" placeholder="Search by name or category..."
+                       th:value="${product_name != null ? product_name : (category != null ? category : '')}" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="nav-links">
+            <a th:href="@{/main/MainPage}">Home</a>
+            <a href="#footer">About Us</a>
+            <div class="dropdown-container">
+                <a href="#" class="dropdown-trigger">Account <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a th:href="@{/main/user_profile}">User Profile</a></li>
+                    <li><a href="#">Basket</a></li>
+                    <li th:if="${user != null && user.role == 'Farmer'}">Pending Orders</a></li>
+                    <li th:if="${user != null}"><a th:href="@{/main/orders/history}">Order History</a></li>
+                    <li th:if="${user != null}"><a th:href="@{/main/logout}">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="products-container">
+    <!-- All Products Section -->
+    <div class="category-section">
+        <h2 class="category-title">All Products</h2>
+        <div class="products-scroller">
+            <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
+            <div class="products-grid">
+                <div class="product-card" th:each="product : ${products}" th:if="${product.authorized != 'Unauthorized'}">
+                    <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                        <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
+                    </a>
+                    <div class="product-details">
+                        <h3 class="product-name" th:text="${product.product_name}"></h3>
+                        <p class="product-category" th:text="${product.category}"></p>
+                        <div class="button-basket">
+                            <button class="basket-btn" data-product-id="${product.productId}">
+                                <i class="fas fa-shopping-basket"></i>
+                            </button>
+                            <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                                <button class="details-btn">Details</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-arrow scroll-right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Fruits Section -->
+    <div class="category-section">
+        <h2 class="category-title">Fruits</h2>
+        <div class="products-scroller">
+            <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
+            <div class="products-grid">
+                <div class="product-card" th:each="product : ${frutaProducts}" th:if="${product.authorized != 'Unauthorized'}">
+                    <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                        <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
+                    </a>
+                    <div class="product-details">
+                        <h3 class="product-name" th:text="${product.product_name}"></h3>
+                        <p class="product-category" th:text="${product.category}"></p>
+                        <button class="basket-btn" data-product-id="${product.productId}">
+                            <i class="fas fa-shopping-basket"></i>
+                        </button>
+                        <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                            <button class="details-btn">Details</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-arrow scroll-right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Vegetables Section -->
+    <div class="category-section">
+        <h2 class="category-title">Vegetables</h2>
+        <div class="products-scroller">
+            <button class="scroll-arrow scroll-left"><i class="fas fa-chevron-left"></i></button>
+            <div class="products-grid">
+                <div class="product-card" th:each="product : ${perimeProducts}" th:if="${product.authorized != 'Unauthorized'}">
+                    <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                        <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
+                    </a>
+                    <div class="product-details">
+                        <h3 class="product-name" th:text="${product.product_name}"></h3>
+                        <p class="product-category" th:text="${product.category}"></p>
+                        <button class="basket-btn" data-product-id="${product.productId}">
+                            <i class="fas fa-shopping-basket"></i>
+                        </button>
+                        <a th:href="@{/main/details/{id}(id=${product.productId})}">
+                            <button class="details-btn">Details</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-arrow scroll-right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>About Merr Bio</h3>
+            <p>Your trusted source for organic fruits and vegetables since 2020. We deliver freshness straight from local farms to your table.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a th:href="@{/main/MainPage}">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>Email: info@merrbio.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h3>Newsletter</h3>
+            <p>Subscribe to get updates on new products and special offers.</p>
+            <form>
+                <input type="email" placeholder="Your email">
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>&copy; 2023 Merr Bio. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all product carousels
+        document.querySelectorAll('.products-scroller').forEach(scroller => {
+            const productsGrid = scroller.querySelector('.products-grid');
+            const prevBtn = scroller.querySelector('.scroll-left');
+            const nextBtn = scroller.querySelector('.scroll-right');
+
+            if (prevBtn && nextBtn) {
+                // Scroll left button
+                prevBtn.addEventListener('click', () => {
+                    productsGrid.scrollBy({
+                        left: -productsGrid.offsetWidth * 0.8,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // Scroll right button
+                nextBtn.addEventListener('click', () => {
+                    productsGrid.scrollBy({
+                        left: productsGrid.offsetWidth * 0.8,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // Show/hide arrows based on scroll position
+                const updateArrows = () => {
+                    prevBtn.style.display = productsGrid.scrollLeft <= 10 ? 'none' : 'flex';
+                    nextBtn.style.display = productsGrid.scrollLeft + productsGrid.offsetWidth >=
+                    productsGrid.scrollWidth - 10 ? 'none' : 'flex';
+                };
+
+                // Initial check
+                updateArrows();
+
+                // Update on scroll
+                productsGrid.addEventListener('scroll', updateArrows);
+            }
+        });
+
+        // Add to basket functionality
+        document.querySelectorAll('.basket-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                // Visual feedback
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                this.style.backgroundColor = '#4CAF50';
+                this.style.color = 'white';
+
+                // Reset after 1.5 seconds
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-shopping-basket"></i>';
+                    this.style.backgroundColor = '#f8f9fa';
+                    this.style.color = '#2e7d32';
+                }, 1500);
+
+                // Here you would add your actual basket logic
+                console.log('Added product to basket:', productId);
+            });
+        });
+    });
+</script>
+</body>
+</html>

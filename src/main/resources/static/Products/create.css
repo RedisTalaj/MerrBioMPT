@@ -1,0 +1,124 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the nav links */
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    justify-content: center; /* Center the nav links */
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #34495e;
+}
+
+/* Error Message */
+.alert {
+    padding: 10px;
+    margin: 20px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.alert-danger {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* Success Message */
+.alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+/* Page Content */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Labels */
+.form-container label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Form Inputs */
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="number"]:focus,
+.form-container input[type="file"]:focus {
+    border-color: #3498db;
+}
+
+/* File Input Styling */
+.form-container input[type="file"] {
+    padding: 8px;
+}
+
+/* Submit Button */
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #2980b9;
+}

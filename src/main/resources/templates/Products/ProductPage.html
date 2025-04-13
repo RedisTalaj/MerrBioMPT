@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management</title>
+    <link rel="stylesheet" th:href="@{/Products/products.css}">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a th:href="@{/products}">Home</a>
+        <a th:href="@{/main/MainPage}">Main Page</a>
+        <a th:href="@{/products/add}" th:if="${currentUser != null}">Add Products</a>
+        <a th:if="${currentUser == null}" th:href="@{/users/login}">Login</a>
+        <a th:if="${currentUser != null}" th:href="@{/main/logout}">Logout</a>
+    </nav>
+</header>
+
+<div class="search-bar">
+    <form th:action="@{/products/search}" method="get">
+        <input type="text" name="keyword" placeholder="Search by name or category..."
+               th:value="${product_name != null ? product_name : (category != null ? category : '')}" required>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<h2 class="book-list-heading">Product List</h2>
+<div th:if="${errorMessageSearch}" class="alert alert-danger">
+    <span th:text="${errorMessageSearch}"></span>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Authorization</th>
+        <th>Image</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}" th:style="${product.authorized == 'Unauthorized'} ? 'background-color: #ffcccc;' : ''">
+        <td th:text="${product.productId}"></td>
+        <td th:text="${product.product_name}"></td>
+        <td th:text="${product.product_description}"></td>
+        <td th:text="${product.category}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.authorized}"></td>
+        <td>
+            <img th:src="@{${product.imagePath}}" alt="Book Image" class="book-image" style="width: 100px; height: 50px">
+        </td>
+        <td class="actions">
+            <a th:href="@{/products/update/{id}(id=${product.productId})}">
+                <button class="update">Update</button>
+            </a>
+            <form th:action="@{/products/delete/{id}(id=${product.productId})}" method="post" style="display: inline;">
+                <button type="submit" class="delete">Delete</button>
+            </form>
+            <a th:if="${currentUser != null and currentUser.role == 'Admin'}"
+               th:href="@{/products/authorize/{id}(id=${product.productId})}">
+                <button class="update">Authorize</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="create-user-button">
+    <a th:href="@{/products/add}">
+        <button>Create New Product</button>
+    </a>
+</div>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', function (e) {
+            if (!confirm('Are you sure you want to delete this product?')) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('table tbody tr');
+        rows.forEach((row, index) => {
+            setTimeout(() => {
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+</body>
+</html>

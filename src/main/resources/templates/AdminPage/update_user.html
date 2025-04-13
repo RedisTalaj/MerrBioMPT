@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/AdminPage/update.css}">
+    <style>
+        .alert {
+            padding: 12px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <nav>
+        <a th:href="@{/users}">Home</a>
+        <a th:href="@{/users/create}">Add User</a>
+    </nav>
+</header>
+
+<!-- Page Content -->
+<h1>Update User</h1>
+<form th:action="@{/users/update/{id}(id=${user.userId})}" th:object="${user}" method="post" class="form-container">
+    <label for="userName">Name:</label>
+    <input type="text" id="userName" name="userName" th:field="*{username}" required>
+    <br>
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" th:field="*{status}" required>
+    <br>
+    <button type="submit">Update</button>
+    <br>
+    <a th:href="@{/users}" class="cancel-button">Cancel</a>
+    <!-- Error Message -->
+    <div th:if="${errorMessageAdmin}" class="alert alert-danger">
+        <span th:text="${errorMessageAdmin}"></span>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User & Product Management System</title>
+    <link rel="stylesheet" th:href="@{/AdminPage/index.css}">
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <nav>
+        <a th:href="@{/users}">Home</a>
+        <a th:href="@{/main/MainPage}">Main Page</a>
+        <a th:href="@{/users/create}">Add User</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/main/user_profile}">User Profile</a>
+    </nav>
+</header>
+
+<!-- Search Bar -->
+<div class="search-bar">
+    <form th:action="@{/users/search}" method="get">
+        <input type="text" name="keyword" placeholder="Search by name..." th:value="${keyword}" required>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<!-- Page Content -->
+<h2>Users List</h2>
+
+<!-- Error Message -->
+<div th:if="${errorMessageSearch}" class="alert alert-danger">
+    <span th:text="${errorMessageSearch}"></span>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Lastname</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" th:style="${user.status == 'Inactive'} ? 'background-color: #ffcccc;' : ''">
+        <td th:text="${user.userId}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.lastname}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.address}"></td>
+        <td th:text="${user.role}"></td>
+        <td th:text="${user.status}"></td>
+        <td class="actions">
+            <!-- Update Button -->
+            <a th:href="@{/users/update/{id}(id=${user.userId})}">
+                <button class="update">Update</button>
+            </a>
+            <!-- Delete Button -->
+            <form th:action="@{/users/delete/{id}(id=${user.userId})}" method="post" style="display: inline;">
+                <button type="submit" class="delete" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Error Message -->
+<div th:if="${errorMessageAdmin}" class="alert alert-danger">
+    <span th:text="${errorMessageAdmin}"></span>
+</div>
+
+<!-- Create New User Button -->
+<div class="create-user-button">
+    <a th:href="@{/users/create}">
+        <button>Create New User</button>
+    </a>
+</div>
+<!-- JavaScript -->
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Confirmation for delete actions
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', function (e) {
+            if (!confirm('Are you sure you want to delete this user?')) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // Add fade-in effect to the table rows
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('table tbody tr');
+        rows.forEach((row, index) => {
+            setTimeout(() => {
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+</body>
+</html>

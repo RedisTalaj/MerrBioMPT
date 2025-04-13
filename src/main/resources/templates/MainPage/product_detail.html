@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/MainPage/product_details.css}">
+</head>
+<body>
+<!-- Navbar -->
+<nav>
+    <div class="nav-container">
+        <div class="nav-brand">
+            <img th:src="@{/images/OtherImages/bioLogo.jpg}" alt="logo" class="Logo">
+            <h2>Merr Bio</h2>
+        </div>
+        <a th:href="@{/main/MainPage}">Home</a>
+    </div>
+</nav>
+<div class="content-container">
+    <div class="product-details-container">
+        <div class="product-image-container">
+            <img th:src="@{${product.imagePath}}" alt="Product Image" class="product-image">
+        </div>
+
+        <div class="product-info">
+            <h1 th:text="${product.product_name}"></h1>
+            <p><strong>Description:</strong> <span th:text="${product.product_description}"></span></p>
+            <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+            <p><strong>Authorized:</strong> <span th:text="${product.authorized}"></span></p>
+            <p><strong>Quantity Available:</strong> <span th:text="${product.quantity}"></span> Ton (<span th:text="${product.quantity * 1000}"></span> kg)</p>
+            <p><strong>Price per Ton:</strong> $<span th:text="${product.price}"></span></p>
+            <p><strong>Price per kg:</strong> $<span th:text="${#numbers.formatDecimal(product.price / 1000, 1, 2)}"></span></p>
+
+            <div th:if="${product.quantity > 0}">
+                <div th:unless="${user}" class="alert alert-warning">
+                    Please <a th:href="@{/users/login}">login</a> to make a purchase.
+                </div>
+
+                <div th:if="${user}">
+                    <div class="purchase-options">
+                        <label>
+                            <input type="radio" name="unit" value="ton" checked> Purchase in Tons
+                        </label>
+                        <label>
+                            <input type="radio" name="unit" value="kg"> Purchase in Kilograms
+                        </label>
+                    </div>
+
+                    <div class="quantity-selector">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="0.01" step="0.01" value="1">
+                    </div>
+
+                    <button class="purchase-button" onclick="preparePurchase()">Purchase</button>
+                </div>
+            </div>
+            <div th:if="${product.quantity <= 0}">
+                <p class="unavailable-message">This product is currently unavailable.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-container">
+        <h2>Reviews</h2>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function preparePurchase() {
+        const unit = document.querySelector('input[name="unit"]:checked').value;
+        const quantity = parseFloat(document.getElementById('quantity').value);
+        const productId = /*[[${product.productId}]]*/ 0;
+
+        if (isNaN(quantity)) {
+            alert("Please enter a valid quantity");
+            return;
+        }
+
+        if (quantity <= 0) {
+            alert("Quantity must be greater than zero");
+            return;
+        }
+
+        const quantityInTons = unit === 'kg' ? quantity / 1000 : quantity;
+        purchaseProduct(productId, quantityInTons);
+    }
+
+    function purchaseProduct(productId, quantityInTons) {
+        fetch(`/main/request-purchase/${productId}?quantity=${quantityInTons}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Purchase failed') });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message);
+                // Optionally redirect to order history or stay on page
+                window.location.href = '/main/orders/history';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
+    }
+</script>
+</body>
+</html>

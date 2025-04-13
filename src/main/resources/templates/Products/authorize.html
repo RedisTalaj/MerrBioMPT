@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Products</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Products/update.css}">
+    <style>
+        .alert {
+            padding: 12px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <nav>
+        <a th:href="@{/products}">Home</a>
+    </nav>
+</header>
+
+<!-- Page Content -->
+<h1>Update Product</h1>
+<form th:action="@{/products/authorize/{id}(id=${product.productId})}" method="post">
+    <!-- Hidden field ensures a value is always sent -->
+    <input type="hidden" name="_authorized" value="false">
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="authorized"
+               name="authorized" value="true"
+               th:checked="${product.authorized == 'true'}"
+               onchange="this.previousElementSibling.value=this.checked">
+        <label class="form-check-label" for="authorized">Authorized</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+</body>
+</html>

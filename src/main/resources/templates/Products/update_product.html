@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Products</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Products/update.css}">
+    <style>
+        .alert {
+            padding: 12px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <nav>
+        <a th:href="@{/products}">Home</a>
+    </nav>
+</header>
+
+<!-- Page Content -->
+<h1>Update Product</h1>
+<form th:action="@{/products/update/{id}(id=${product.productId})}" th:object="${product}" method="post" class="form-container" enctype="multipart/form-data">
+    <label for="product_name">Name:</label>
+    <input type="text" id="product_name" name="product_name" required>
+    <br>
+    <label for="product_description">Description:</label>
+    <input type="text" id="product_description" name="product_description" required>
+    <br>
+    <label for="category">Category:</label>
+    <input type="text" id="category" name="category" required>
+    <br>
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" placeholder="Ton" required>
+    <br>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" required>
+    <br>
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+    <br>
+    <button type="submit">Update</button>
+    <br>
+    <a th:href="@{/products}" class="cancel-button">Cancel</a>
+    <!-- Error Message -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
+</form>
+</body>
+</html>
